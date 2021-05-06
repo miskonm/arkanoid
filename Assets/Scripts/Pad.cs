@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Pad : MonoBehaviour
 {
@@ -11,7 +8,7 @@ public class Pad : MonoBehaviour
     [SerializeField] private float minX;
     [SerializeField] private float maxX;
 
-    private Ball ball;
+    private Transform ballTransform;
 
     #endregion
 
@@ -20,30 +17,29 @@ public class Pad : MonoBehaviour
 
     private void Start()
     {
-        ball = FindObjectOfType<Ball>();
+        ballTransform = FindObjectOfType<Ball>().transform;
     }
 
     private void Update()
     {
+        Vector3 padPosition = Vector3.zero;
+
         if (GameManager.Instance.IsAutoPlay)
         {
-            Vector3 padPosition = ball.transform.position;
+            padPosition = ballTransform.position;
             padPosition.y = transform.position.y;
-            padPosition.x = Mathf.Clamp(padPosition.x, minX, maxX);
-            transform.position = padPosition;
         }
         else
         {
             Vector3 positionInPixels = Input.mousePosition;
             Vector3 positionInWorld = Camera.main.ScreenToWorldPoint(positionInPixels);
 
-            Vector3 padPosition = positionInWorld;
+            padPosition = positionInWorld;
             padPosition.y = transform.position.y;
-
-            padPosition.x = Mathf.Clamp(padPosition.x, minX, maxX);
-
-            transform.position = padPosition;
         }
+
+        padPosition.x = Mathf.Clamp(padPosition.x, minX, maxX);
+        transform.position = padPosition;
     }
 
     #endregion

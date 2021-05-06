@@ -1,24 +1,17 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine;
 
 public class GameManager : SingletonMonoBehaviour<GameManager>
 {
     #region Variables
 
     [Header("UI")]
-    [SerializeField] private Text scoreLabel;
-    [SerializeField] private Transform canvasTransform;
-    [SerializeField] private GameObject pauseViewPrefab;
+    [SerializeField] private GameUi gameUi;
 
     [Header("Autoplay")]
     [SerializeField] private bool isAutoPlay;
 
     private int score;
     private bool isGamePaused;
-    private GameObject pauseView;
 
     #endregion
 
@@ -44,18 +37,8 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
 
     private void Start()
     {
-        // pauseViewGameObject.SetActive(false);
-
         score = 0;
         UpdateScoreLabel();
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            TogglePause();
-        }
     }
 
     #endregion
@@ -71,34 +54,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
 
     private void UpdateScoreLabel()
     {
-        scoreLabel.text = score.ToString();
-    }
-
-    private void TogglePause()
-    {
-        isGamePaused = !isGamePaused;
-
-        Time.timeScale = isGamePaused ? 0f : 1f;
-
-        // if (isGamePaused)
-        // {
-        //     Time.timeScale = 0f;
-        // }
-        // else
-        // {
-        //     Time.timeScale = 1f;
-        // }
-
-        // pauseViewGameObject.SetActive(isGamePaused);
-
-        if (isGamePaused)
-        {
-            pauseView = Instantiate(pauseViewPrefab, canvasTransform);
-        }
-        else
-        {
-            Destroy(pauseView);
-        }
+        gameUi.SetScore(score);
     }
 
     #endregion

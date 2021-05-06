@@ -1,7 +1,4 @@
-﻿using UnityEngine;
-using UnityEngine.SceneManagement;
-
-public class LevelManager : SingletonMonoBehaviour<LevelManager>
+﻿public class LevelManager : SingletonMonoBehaviour<LevelManager>
 {
     #region Variables
 
@@ -32,20 +29,15 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
     private void BlockCreated()
     {
         blockCount++;
-
-        Debug.Log(blockCount);
     }
 
     private void BlockDestroyed()
     {
         blockCount--;
 
-        Debug.Log(blockCount);
-
         if (blockCount <= 0)
         {
-            int index = SceneManager.GetActiveScene().buildIndex;
-            SceneManager.LoadScene(index + 1);
+            SceneTransitions.GoToNextScene();
         }
     }
 
