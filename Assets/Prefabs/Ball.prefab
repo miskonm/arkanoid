@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 7702731832838481775}
   - component: {fileID: 7702731832838481774}
   - component: {fileID: 2038982050}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Ball
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -103,6 +103,8 @@ MonoBehaviour:
   startDirectionY: 1
   randomMinX: -3
   randomMaxX: 5
+  maxSpeed: 60
+  minSpeed: 1
 --- !u!58 &7702731832838481775
 CircleCollider2D:
   m_ObjectHideFlags: 0

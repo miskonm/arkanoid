@@ -9,7 +9,7 @@ public class Ball : MonoBehaviour
     #region Variables
 
     [Header("Base Settings")]
-    [SerializeField] private Rigidbody2D rb;
+    [SerializeField] public Rigidbody2D rb;
     [SerializeField] private Transform padTransform;
 
     [Header("Random Direction")]
@@ -21,6 +21,10 @@ public class Ball : MonoBehaviour
     
     [Range(0, 5)]
     [SerializeField] private float randomMaxX;
+    
+    [Header("Speed")]
+    [SerializeField] private float maxSpeed;
+    [SerializeField] private float minSpeed;
 
     private bool isStarted;
 
@@ -64,6 +68,21 @@ public class Ball : MonoBehaviour
     #endregion
 
 
+    #region Public methods
+
+    public void ChangeSpeed(float speedFactor)
+    {
+        // rb.velocity = rb.velocity * speedFactor; same
+        
+        var newVelocityLength = Mathf.Clamp(rb.velocity.magnitude * speedFactor, minSpeed, maxSpeed);
+        rb.velocity = rb.velocity.normalized * newVelocityLength;
+
+        // rb.velocity *= speedFactor;
+    }
+
+    #endregion
+
+
     #region Private methods
 
     private void StartBall()
@@ -71,7 +90,7 @@ public class Ball : MonoBehaviour
         float x = Random.Range(randomMinX, randomMaxX);
         Vector2 direction = new Vector2(x, startDirectionY).normalized;
         Vector2 force = direction * speed;
-        // rb.AddForce(force);
+        
         rb.velocity = force;
         isStarted = true;
     }

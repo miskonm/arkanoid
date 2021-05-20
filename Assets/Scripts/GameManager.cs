@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class GameManager : SingletonMonoBehaviour<GameManager>
@@ -61,13 +58,20 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
     #endregion
 
 
-    #region Private methods
+    #region Public methods
 
-    private void AddScore(int score)
+    public void AddScore(int score)
     {
         this.score += score;
         UpdateScoreLabel();
     }
+
+    #endregion
+
+
+    #region Private methods
+
+    
 
     private void UpdateScoreLabel()
     {
