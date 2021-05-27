@@ -18,7 +18,7 @@ public class SingletonMonoBehaviour<T> : MonoBehaviour where T : MonoBehaviour
 
     #region Unity lifecycle
 
-    protected void Awake()
+    protected virtual void Awake()
     {
         if (instance != null)
         {

@@ -10,9 +10,17 @@ public class Pad : MonoBehaviour
     [Header("Movement Limit")]
     [SerializeField] private float minX;
     [SerializeField] private float maxX;
-
+    
+    [Header("Vfx")]
+    [SerializeField] private GameObject stickyVfxPrefab;
+    
     private Ball ball;
 
+    private bool isSticky;
+    private GameObject stickyVfx;
+
+    private float stickyTimer;
+    
     #endregion
 
 
@@ -21,10 +29,14 @@ public class Pad : MonoBehaviour
     private void Start()
     {
         ball = FindObjectOfType<Ball>();
+        
+        
     }
 
     private void Update()
     {
+        TickStickyTimer();
+        
         if (GameManager.Instance.IsAutoPlay)
         {
             Vector3 padPosition = ball.transform.position;
@@ -46,5 +58,58 @@ public class Pad : MonoBehaviour
         }
     }
 
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        if (isSticky && other.gameObject.CompareTag(Tags.Ball))
+        {
+            var ball = other.gameObject.GetComponent<Ball>();
+            ball.Stick();
+        }
+    }
+
     #endregion
+
+
+    public void MakeSticky(float duration)
+    {
+        isSticky = true;
+
+        if (stickyVfx == null)
+        {
+            stickyVfx = Instantiate(stickyVfxPrefab, transform);
+        }
+
+        stickyTimer = duration;
+        // Invoke(nameof(StopSticky), duration);
+    }
+
+    private void StopSticky()
+    {
+        Debug.Log($"StopSticky");
+        
+        isSticky = false;
+
+        if (stickyVfx != null)
+        {
+            Destroy(stickyVfx);
+            stickyVfx = null;
+        }
+    }
+
+    private void TickStickyTimer()
+    {
+        if (!isSticky)
+        {
+            return;
+        }
+        
+        if (stickyTimer > 0)
+        {
+            stickyTimer -= Time.deltaTime;
+        }
+        else
+        {
+            StopSticky();
+        }
+    }
 }

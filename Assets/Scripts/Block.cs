@@ -20,6 +20,9 @@ public class Block : MonoBehaviour
     [SerializeField] private bool isExplosive;
     [SerializeField] private float explosionRadius;
     [SerializeField] private GameObject explosionVfx;
+    
+    [Header("Audio")]
+    [SerializeField] private AudioClip deathAudioClip;
 
     #endregion
 
@@ -57,6 +60,17 @@ public class Block : MonoBehaviour
 
     public void DestroyBlock()
     {
+        Debug.Log($"DestroyBlock audioSource.Play();");
+
+        // var audioSource = FindObjectOfType<AudioSource>();
+        //
+        // if (audioSource != null)
+        // {
+        //     audioSource.PlayOneShot(deathAudioClip);
+        // }
+        
+        SfxAudioSource.Instance.PlaySfx(deathAudioClip);
+
         Destroy(gameObject);
 
 

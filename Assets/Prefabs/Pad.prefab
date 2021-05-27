@@ -97,6 +97,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minX: -7.2
   maxX: 7.2
+  stickyVfxPrefab: {fileID: 8548043397184424894, guid: 9eb7d644862b3d24b9e2448da3f426ca,
+    type: 3}
 --- !u!60 &904948482
 PolygonCollider2D:
   m_ObjectHideFlags: 0

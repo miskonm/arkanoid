@@ -124,6 +124,10 @@ MonoBehaviour:
   score: 3
   destroyParticlePrefab: {fileID: 1770071749804620667, guid: 954a9e5ff2bc5e343a2ddef0e45f907d,
     type: 3}
-  pickUpPrefab: {fileID: 3276944308543962205, guid: 0eb4fb1f858477d46a7623aa1ede6d71,
+  pickUpPrefab: {fileID: 3276944308543962205, guid: 5ad4c0e8d9eb8784586d80dbd57db4b8,
     type: 3}
-  pickUpCreationRate: 35
+  pickUpCreationRate: 100
+  isExplosive: 0
+  explosionRadius: 0
+  explosionVfx: {fileID: 0}
+  deathAudioClip: {fileID: 8300000, guid: 9d9600b378a620e4091259b1ee6b0d49, type: 3}

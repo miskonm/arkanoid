@@ -41,7 +41,7 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
 
         if (blockCount <= 0)
         {
-            LoadNextScene();
+            Invoke(nameof(LoadNextScene), 1.5f);
         }
     }
 

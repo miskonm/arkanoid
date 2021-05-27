@@ -9,8 +9,8 @@ public class Ball : MonoBehaviour
     #region Variables
 
     [Header("Base Settings")]
+    [SerializeField] private bool needToCentrate;
     [SerializeField] public Rigidbody2D rb;
-    [SerializeField] private Transform padTransform;
 
     [Header("Random Direction")]
     [SerializeField] private float speed;
@@ -25,17 +25,35 @@ public class Ball : MonoBehaviour
     [Header("Speed")]
     [SerializeField] private float maxSpeed;
     [SerializeField] private float minSpeed;
+    
+    [Header("Audio")]
+    [SerializeField] private AudioSource audioSource;
 
+    private Transform padTransform;
+    
     private bool isStarted;
+    private Vector2 padOffset;
 
     #endregion
 
 
     #region Unity lifecycle
 
+    private void Awake()
+    {
+        padTransform = FindObjectOfType<Pad>().transform;
+
+        if (needToCentrate)
+        {
+            CenterWithPad();
+        }
+        
+        CalculatePadOffset();
+    }
+
     private void Start()
     {
-        if (GameManager.Instance.IsAutoPlay)
+        if (NeedStartBall())
         {
             StartBall();
         }
@@ -45,14 +63,8 @@ public class Ball : MonoBehaviour
     {
         if (!isStarted)
         {
-            // Move with pad
-            Vector3 padPosition = padTransform.position;
-            padPosition.y = transform.position.y;
+            MoveWithPad();
 
-            transform.position = padPosition;
-
-            // If press left button
-            //// Start ball
             if (Input.GetMouseButtonDown(0))
             {
                 StartBall();
@@ -63,6 +75,11 @@ public class Ball : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.DrawRay(transform.position, rb.velocity);
+    }
+
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        audioSource.Play();
     }
 
     #endregion
@@ -80,10 +97,28 @@ public class Ball : MonoBehaviour
         // rb.velocity *= speedFactor;
     }
 
+    public void Stick()
+    {
+        isStarted = false;
+        rb.velocity = Vector2.zero;
+
+        CalculatePadOffset();
+
+        if (GameManager.Instance.IsAutoPlay)
+        {
+            Invoke(nameof(StartBall), 2f);
+        }
+    }
+
     #endregion
 
 
     #region Private methods
+
+    private bool NeedStartBall()
+    {
+        return Input.GetMouseButtonDown(0) || GameManager.Instance.IsAutoPlay;
+    }
 
     private void StartBall()
     {
@@ -93,6 +128,27 @@ public class Ball : MonoBehaviour
         
         rb.velocity = force;
         isStarted = true;
+    }
+
+    private void MoveWithPad()
+    {
+        Vector2 padPosition = padTransform.position;
+        padPosition -= padOffset;
+        
+        transform.position = padPosition;
+    }
+
+    private void CalculatePadOffset()
+    {
+        padOffset = padTransform.position - transform.position;
+    }
+
+    private void CenterWithPad()
+    {
+        var padPosition = padTransform.position;
+        padPosition.y = transform.position.y;
+
+        transform.position = padPosition;
     }
 
     #endregion
